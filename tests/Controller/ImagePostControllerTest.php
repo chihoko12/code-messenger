@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 class ImagePostControllerTest extends WebTestCase
 {
@@ -21,8 +22,9 @@ class ImagePostControllerTest extends WebTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertEquals(201, $client->getResponse()->getStatusCode(), 'Expected HTTP status 201 for successful image upload');
-        $this->assertJson($client->getResponse()->getContent(), 'Expected JSON response');
 
+        /** @var InMemoryTransport $transport */
+        $transport = self::$container->get('messenger.transport.async_priority_high');
+        $this->assertCount(1, $transport->get());
     }
 }
