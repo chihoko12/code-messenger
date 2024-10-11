@@ -6,6 +6,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.test
 /public/bundles/
 /var/
 /vendor/
@@ -21,3 +22,14 @@ yarn-error.log
 ###> CUSTOM ###
 public/uploads/images
 ###< CUSTOM ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
