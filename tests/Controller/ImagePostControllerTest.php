@@ -14,8 +14,8 @@ class ImagePostControllerTest extends WebTestCase
         $client = static::createClient();
 
         $uploadedFile = new UploadedFile(
-            __DIR__.'/../fixtures/marcell-rubies-qmL6pgKtOrg-unsplash.jpg',
-            'marcell-rubies-qmL6pgKtOrg-unsplash.jpg'
+            __DIR__.'/../fixtures/testImage.jpg',
+            'testImage.jpg'
         );
         $client->request('POST', '/api/images', [], [
             'file' => $uploadedFile,

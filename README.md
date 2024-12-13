@@ -1,3 +1,7 @@
+```
+ddev exec bin/console messenger:consume -vv async_priority_high async
+```
+
 # Messenger! Queue work for Later
 
 Well hi there! This repository holds the code and script

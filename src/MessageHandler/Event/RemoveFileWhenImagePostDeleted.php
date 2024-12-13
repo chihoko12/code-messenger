@@ -12,7 +12,6 @@ class RemoveFileWhenImagePostDeleted implements MessageHandlerInterface
 
     public function __construct(PhotoFileManager $photoFileManager)
     {
-
         $this->photoFileManager = $photoFileManager;
     }
     public function __invoke(ImagePostDeletedEvent $event)
