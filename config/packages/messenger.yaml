@@ -39,6 +39,21 @@ framework:
                     queues:
                         messages_high:
                             binding_keys: [high]
+            # a transport used consuming messages from an external system
+            # messages are not meant to be *sent* to this transport
+            external_messages:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                serializer: App\Messenger\ExternalJsonMessengerSerializer
+                options:
+                    exchange:
+                        name: messages
+                        type: direct
+                        default_publish_routing_key: from_external
+#                    auto_setup: false
+                    queues:
+#                        messages_from_external: ~
+                        messages_from_external:
+                            binding_keys: [from_external]
 
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
