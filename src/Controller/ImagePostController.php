@@ -67,7 +67,8 @@ class ImagePostController extends AbstractController
             new DelayStamp(1000),
             new AmqpStamp('normal')
         ]);
-        $messageBus->dispatch($envelope);
+
+        dump($messageBus->dispatch($envelope));
 
         //$messageBus->dispatch(new LogEmoji(2));
 

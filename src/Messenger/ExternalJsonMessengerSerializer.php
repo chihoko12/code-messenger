@@ -4,6 +4,8 @@ namespace App\Messenger;
 
 use App\Message\Command\LogEmoji;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
+use Symfony\Component\Messenger\Stamp\BusNameStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 class ExternalJsonMessengerSerializer implements SerializerInterface
@@ -15,6 +17,16 @@ class ExternalJsonMessengerSerializer implements SerializerInterface
         $headers = $encodedEnvelope['headers'];
 
         $data = json_decode($body, true);
+
+        if (null === $data) {
+            throw new MessageDecodingFailedException('Invalid JSON'); // the queue is removed
+        }
+
+        if (!isset($data['emoji'])) {
+            // throw new \Exception('Missing the emoji key!'); the queue remains and it fails again and again
+            throw new MessageDecodingFailedException('Missing the emoji key');
+        }
+
         $message = new LogEmoji($data['emoji']);
 
         // in cse of redelivery, unserialize any stamps
@@ -23,7 +35,12 @@ class ExternalJsonMessengerSerializer implements SerializerInterface
             $stamps = unserialize($headers['stamps']);
         }
 
-        return new Envelope($message, $stamps);
+        $envelope =  new Envelope($message, $stamps);
+
+        // needed only if i need this to be sent through the non-default bus
+        $envelope = $envelope->with(new BusNameStamp('command.bus'));
+
+        return $envelope;
     }
 
     public function encode(Envelope $envelope): array
